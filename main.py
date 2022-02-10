@@ -9,6 +9,7 @@ timestamp = time.strftime('%Y-%m-%d-%I:%M')
 
 
 def handler(event, context):
+    
     print("Function started")
 
     DB_HOST = event['DB_HOST']
@@ -21,5 +22,6 @@ def handler(event, context):
     command = "mysqldump -h %s -u %s -p%s %s | gzip -c | aws s3 cp - s3://%s/%s.gz" % (
         DB_HOST, DB_USER, DB_PASS, DB_NAME, S3_BUCKET, DB_NAME + "_" + timestamp)
     subprocess.Popen(command, shell=True).wait()
+
     print("MySQL backup finished")
     return "backup finished"
